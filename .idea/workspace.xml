@@ -4,13 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Primer commit, creacion del proyecto">
+    <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Primer commit, creacion del la carpeta src">
+      <change afterPath="$PROJECT_DIR$/src/SMTPServer/emailserver.tac" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ServidorCorreo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ServidorCorreo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -19,6 +29,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -74,6 +85,8 @@
       <workItem from="1741274249488" duration="208000" />
       <workItem from="1741627800859" duration="3000" />
       <workItem from="1741631227753" duration="975000" />
+      <workItem from="1741742097672" duration="114000" />
+      <workItem from="1741742219823" duration="7250000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit, creacion del proyecto">
       <option name="closed" value="true" />
@@ -103,6 +116,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Primer comite, creacion del proyecto" />
     <MESSAGE value="Primer commit, creacion del proyecto" />
-    <option name="LAST_COMMIT_MESSAGE" value="Primer commit, creacion del proyecto" />
+    <MESSAGE value="Primer commit, creacion del la carpeta src" />
+    <option name="LAST_COMMIT_MESSAGE" value="Primer commit, creacion del la carpeta src" />
   </component>
 </project>
