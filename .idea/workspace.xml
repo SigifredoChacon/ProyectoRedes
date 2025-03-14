@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Primer commit, creacion del la carpeta src">
-      <change afterPath="$PROJECT_DIR$/src/SMTPServer/emailserver.tac" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ServidorCorreo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ServidorCorreo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SMTPClient/smtpclient-1.tac" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +53,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Python.smtpserver.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;DeveloperLinux&quot;,
@@ -87,6 +87,9 @@
       <workItem from="1741631227753" duration="975000" />
       <workItem from="1741742097672" duration="114000" />
       <workItem from="1741742219823" duration="7250000" />
+      <workItem from="1741796570709" duration="4433000" />
+      <workItem from="1741835484705" duration="8814000" />
+      <workItem from="1741886615331" duration="7267000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit, creacion del proyecto">
       <option name="closed" value="true" />
@@ -118,5 +121,8 @@
     <MESSAGE value="Primer commit, creacion del proyecto" />
     <MESSAGE value="Primer commit, creacion del la carpeta src" />
     <option name="LAST_COMMIT_MESSAGE" value="Primer commit, creacion del la carpeta src" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Tarea1$smtpserver.coverage" NAME="smtpserver Coverage Results" MODIFIED="1741837509864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/SMTPServer" />
   </component>
 </project>
