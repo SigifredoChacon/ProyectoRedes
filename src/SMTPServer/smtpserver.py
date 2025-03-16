@@ -22,7 +22,7 @@ class ConsoleMessageDelivery:
         self.storage_path = storage_path
 
     def receivedHeader(self, helo, origin, recipients):
-        return "Received: ProvisionalServer"
+        return "Received: server sigifedo.lat"
 
     def validateFrom(self, helo, origin):
         # All addresses are accepted
@@ -67,7 +67,7 @@ class ConsoleMessage:
 
         os.makedirs(user_path, exist_ok=True)
 
-        filename= "message_{}.txt".format(time.time()*1000)
+        filename= "message_{}.eml".format(time.time()*1000)
         filepath= os.path.join(user_path,filename)
 
         with open(filepath,"w", encoding="utf-8")as f:
@@ -93,7 +93,10 @@ class ConsoleSMTPFactory(smtp.SMTPFactory):
     def buildProtocol(self, addr):
         p = smtp.SMTPFactory.buildProtocol(self, addr)
         p.delivery = self.delivery
-        p.challengers = {"LOGIN": LOGINCredentials, "PLAIN": PLAINCredentials}
+        p.challengers = {
+            b"LOGIN": LOGINCredentials,
+            b"PLAIN": PLAINCredentials
+        }
         return p
 
 

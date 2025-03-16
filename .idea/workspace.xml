@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Primer commit, creacion del la carpeta src">
-      <change afterPath="$PROJECT_DIR$/src/SMTPClient/smtpclient-1.tac" afterDir="false" />
+    <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Creación del servidor, a base de un toy server dado en la documentación oficial de twisted">
+      <change afterPath="$PROJECT_DIR$/src/IMAPServer/credentials.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/IMAPServer/imapserver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SMTPClient/mails_to.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SMTPClient/message.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/SMTPClient/smtpclient.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SMTPClient/smtpclient-1.tac" beforeDir="false" afterPath="$PROJECT_DIR$/src/SMTPClient/smtpclient.tac" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +62,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;DeveloperLinux&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/estudiante/Documentos/Universidad/Redes/Tareas/Tarea1/src/IMAPServer&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -65,6 +71,12 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/IMAPServer" />
+      <recent name="$PROJECT_DIR$/src/SMTPClient" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -90,6 +102,8 @@
       <workItem from="1741796570709" duration="4433000" />
       <workItem from="1741835484705" duration="8814000" />
       <workItem from="1741886615331" duration="7267000" />
+      <workItem from="1741988576830" duration="11718000" />
+      <workItem from="1742053124275" duration="31028000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit, creacion del proyecto">
       <option name="closed" value="true" />
@@ -117,10 +131,12 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="RELOAD_CONTEXT" value="false" />
     <MESSAGE value="Primer comite, creacion del proyecto" />
     <MESSAGE value="Primer commit, creacion del proyecto" />
     <MESSAGE value="Primer commit, creacion del la carpeta src" />
-    <option name="LAST_COMMIT_MESSAGE" value="Primer commit, creacion del la carpeta src" />
+    <MESSAGE value="Creación del servidor, a base de un toy server dado en la documentación oficial de twisted" />
+    <option name="LAST_COMMIT_MESSAGE" value="Creación del servidor, a base de un toy server dado en la documentación oficial de twisted" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Tarea1$smtpserver.coverage" NAME="smtpserver Coverage Results" MODIFIED="1741837509864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/SMTPServer" />
