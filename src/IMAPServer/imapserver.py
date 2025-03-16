@@ -14,7 +14,7 @@ from twisted.cred import error
 from twisted.cred.checkers import ICredentialsChecker
 from twisted.mail.imap4 import MessageSet
 
-# Ruta del CSV de credenciales
+
 CREDENTIALS_CSV = "/home/estudiante/Documentos/Universidad/Redes/Tareas/Tarea1/src/IMAPServer/credentials.csv"
 
 
@@ -107,7 +107,6 @@ class FileMessage:
             raise e
 
     def isMultipart(self):
-        # Asumimos que los mensajes no son multipart.
         return False
 
 @implementer(imap4.IMailbox)
@@ -177,8 +176,7 @@ class FileMailbox:
         return True
 
     def getHierarchicalDelimiter(self):
-        # Devuelve el delimitador jerárquico. Por ejemplo: b"/"
-        return b"/"
+        return "/"
 
     def addListener(self, listener):
         pass

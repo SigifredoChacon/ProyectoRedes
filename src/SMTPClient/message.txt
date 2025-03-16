@@ -1,6 +1,6 @@
 Hola {name},
 
-Queremos compartir contigo un resumen de los avances recientes en el sector de los vehículos eléctricos. En los últimos años se ha observado un progreso notable en la tecnología de baterías, la eficiencia energética y la autonomía de estos automóviles. Esto representa un gran paso hacia un futuro más sostenible y un cambio significativo en la industria del transporte.
+Esta es una prueba desde la instancía de aws
 
 Saludos cordiales,
-El Equipo de Innovación
+El Equipo de Sigi

@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Creación del servidor, a base de un toy server dado en la documentación oficial de twisted">
-      <change afterPath="$PROJECT_DIR$/src/IMAPServer/credentials.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/IMAPServer/imapserver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SMTPClient/mails_to.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SMTPClient/message.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SMTPClient/smtpclient.py" afterDir="false" />
+    <list default="true" id="4b47981c-70b2-4218-bf18-0a45f8f292fe" name="Changes" comment="Se termino el cliente, ya con el envió de correos formato mime, y se implementó en una buena proporcion el servidor imap">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SMTPClient/smtpclient-1.tac" beforeDir="false" afterPath="$PROJECT_DIR$/src/SMTPClient/smtpclient.tac" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/SMTPServer/smtpserver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IMAPServer/credentials.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/IMAPServer/credentials.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IMAPServer/imapserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/IMAPServer/imapserver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SMTPClient/message.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/SMTPClient/message.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,6 +100,7 @@
       <workItem from="1741886615331" duration="7267000" />
       <workItem from="1741988576830" duration="11718000" />
       <workItem from="1742053124275" duration="31028000" />
+      <workItem from="1742143280423" duration="4729000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit, creacion del proyecto">
       <option name="closed" value="true" />
