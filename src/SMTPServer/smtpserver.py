@@ -1,4 +1,3 @@
-
 from zope.interface import implementer
 
 from twisted.internet import defer
@@ -17,17 +16,22 @@ log.startLogging(sys.stdout)
 @implementer(smtp.IMessageDelivery)
 class ConsoleMessageDelivery:
 
+    # Inicializa la instancia con la lista de dominios permitidos y la ruta donde se almacenarán los correos.
     def __init__(self, domains, storage_path):
         self.domains = domains  # Lista de dominios permitidos
         self.storage_path = storage_path
 
+    # Devuelve un encabezado 'Received' personalizado para el correo entrante.
     def receivedHeader(self, helo, origin, recipients):
         return "Received: server sigifedo.lat"
 
+    # Acepta el remitente sin ninguna validacion adicionales.
     def validateFrom(self, helo, origin):
         # All addresses are accepted
         return origin
 
+    # Valida el destinatario extrayendo dominio y parte local, si el dominio está permitido,
+    # retorna una función que instanciará ConsoleMessage, de lo contrario lanza una excepción.
     def validateTo(self, user):
         recipient_domain = getattr(user.dest, "domain", None)
         local_part = getattr(user.dest, "local", None)
@@ -44,17 +48,21 @@ class ConsoleMessageDelivery:
 
 @implementer(smtp.IMessage)
 class ConsoleMessage:
+    # Inicializa la instancia con la ruta de almacenamiento, dominio, parte local del destinatario y prepara la lista para las líneas del mensaje.
     def __init__(self, storage_path, domain, local_part):
         self.storage_path = storage_path
         self.domain = domain
         self.local_part = local_part
         self.lines = []
 
+    # Recibe cada línea del mensaje, decodificándola si es necesario, y la añade a la lista.
     def lineReceived(self, line):
         if isinstance(line, bytes):
             line = line.decode('utf-8', errors='replace')
         self.lines.append(line)
 
+    # Une las líneas del mensaje, crea la estructura de directorios por dominio y usuario,
+    # guarda el correo en formato .eml y devuelve un deferred para indicar que se completó el proceso.
     def eomReceived(self):
 
         import os
@@ -77,6 +85,7 @@ class ConsoleMessage:
         self.lines = None
         return defer.succeed(None)
 
+    # En caso de error o desconexión, descarta las líneas almacenadas del mensaje.
     def connectionLost(self):
         # There was an error, throw away the stored lines
         self.lines = None
@@ -85,11 +94,13 @@ class ConsoleMessage:
 class ConsoleSMTPFactory(smtp.SMTPFactory):
     protocol = smtp.ESMTP
 
+    # Inicializa la fábrica SMTP asignando el portal y la entrega de mensajes.
     def __init__(self, portal, delivery, *args, **kwargs):
         smtp.SMTPFactory.__init__(self, *args, **kwargs)
         self.portal = portal
         self.delivery = delivery
 
+    # Construye el protocolo SMTP, asigna la entrega de mensajes y configura la autenticación.
     def buildProtocol(self, addr):
         p = smtp.SMTPFactory.buildProtocol(self, addr)
         p.delivery = self.delivery
@@ -102,14 +113,18 @@ class ConsoleSMTPFactory(smtp.SMTPFactory):
 
 @implementer(IRealm)
 class SimpleRealm:
+    # Inicializa el realm simple con la instancia de entrega de mensajes.
     def __init__(self,delivery):
         self.delivery = delivery
 
+    # Proporciona el avatar correspondiente para el mensaje SMTP si se solicita IMessageDelivery;
+    # de lo contrario, lanza NotImplementedError.
     def requestAvatar(self, avatarId, mind, *interfaces):
         if smtp.IMessageDelivery in interfaces:
             return smtp.IMessageDelivery, self.delivery, lambda: None
         raise NotImplementedError()
 
+# Analiza y retorna los argumentos de línea de comando para configurar el servidor SMTP.
 def parse_args():
     parser = argparse.ArgumentParser(description="Servidor SMTP con Twisted")
     parser.add_argument("-d", "--domains", required=True,
@@ -120,7 +135,7 @@ def parse_args():
                         help="Puerto en el que se ejecutará el servidor SMTP")
     return parser.parse_args()
 
-
+# Configura y arranca el servidor SMTP: procesa argumentos, inicializa componentes y crea el servicio en el puerto especificado.
 def main():
     from twisted.application import internet
     from twisted.application import service

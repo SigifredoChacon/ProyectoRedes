@@ -14,10 +14,9 @@ from twisted.cred import error
 from twisted.cred.checkers import ICredentialsChecker
 from twisted.mail.imap4 import MessageSet
 
-
 CREDENTIALS_CSV = "/home/estudiante/Documentos/Universidad/Redes/Tareas/Tarea1/src/IMAPServer/credentials.csv"
 
-
+# Inicializa el checker cargando las credenciales desde el CSV, filtrando filas inválidas.
 @implementer(ICredentialsChecker)
 class CSVCredentialsChecker:
     credentialInterfaces = (credentials.IUsernamePassword,)
@@ -39,6 +38,7 @@ class CSVCredentialsChecker:
             print("Error al cargar credenciales desde CSV:", e)
             raise e
 
+    # Valida el login comparando usuario y contraseña, retornando un Deferred según el resultado.
     def requestAvatarId(self, credentials):
         username = (credentials.username.decode('utf-8')
                     if isinstance(credentials.username, bytes)
@@ -52,27 +52,30 @@ class CSVCredentialsChecker:
         else:
             return defer.fail(error.UnauthorizedLogin("Invalid login"))
 
-
+# Inicializa un mensaje con un UID y la ruta del archivo asociado.
 class FileMessage:
     def __init__(self, uid, filepath):
         self.uid = uid
         self.filepath = filepath
         self._deleted = False
 
+    # Retorna el UID asignado al mensaje.
     def getUID(self):
         return self.uid
 
+    # Devuelve una lista vacía de flags para el mensaje.
     def getFlags(self):
         return []
 
+    # Retorna el tamaño del archivo del mensaje, o 0 si ocurre algún error.
     def getSize(self):
         try:
             return os.path.getsize(self.filepath)
         except Exception:
             return 0
 
+    # Lee los encabezados del mensaje hasta una línea en blanco y los retorna como diccionario.
     def getHeaders(self, *args, **kwargs):
-
         try:
             with open(self.filepath, "rb") as f:
                 header_bytes = b""
@@ -86,6 +89,7 @@ class FileMessage:
         except Exception:
             return {}
 
+    # Retorna el cuerpo completo del mensaje y marca el mensaje como "eliminado" para evitar futuras lecturas.
     def getBody(self, skipAlreadyRetrieved=False):
         if self._deleted:
             return defer.succeed(b"")
@@ -97,6 +101,7 @@ class FileMessage:
         except Exception as e:
             return defer.fail(e)
 
+    # Retorna el cuerpo del mensaje como un objeto BytesIO y marca el mensaje como eliminado.
     def getBodyFile(self):
         try:
             with open(self.filepath, "rb") as f:
@@ -106,15 +111,18 @@ class FileMessage:
         except Exception as e:
             raise e
 
+    # Indica que el mensaje no es multipart.
     def isMultipart(self):
         return False
 
+# Inicializa el buzón asociándolo a un directorio y gestiona la lista interna de mensajes.
 @implementer(imap4.IMailbox)
 class FileMailbox:
     def __init__(self, mailboxDir):
         self.mailboxDir = mailboxDir
         self._messages = None
 
+    # Escanea el directorio del buzón y asigna un UID secuencial a cada archivo encontrado.
     def _scanMessages(self):
         self._messages = {}
         files = sorted(os.listdir(self.mailboxDir))
@@ -125,12 +133,13 @@ class FileMailbox:
                 self._messages[uid] = FileMessage(uid, fpath)
                 uid += 1
 
+    # Retorna el diccionario de mensajes actuales en el buzón.
     def listMessages(self):
         self._scanMessages()
         return self._messages
 
+    # Recupera mensajes basándose en un número o rango (MessageSet) y retorna un iterador de los resultados.
     def fetch(self, msgnum, skipAlreadyRetrieved=False, uid=False):
-
         self._scanMessages()
         if isinstance(msgnum, MessageSet):
             first = getattr(msgnum, 'first', None)
@@ -153,38 +162,48 @@ class FileMailbox:
                 results[m] = self._messages[m]
         return iter(results.items())
 
+    # Retorna un Deferred que indica que la operación de expurgado se completó (sin acción real).
     def expunge(self):
         return defer.succeed(None)
 
+    # Devuelve una lista vacía de flags del buzón.
     def getFlags(self):
         return []
 
+    # Retorna el número total de mensajes en el buzón tras escanear el directorio.
     def getMessageCount(self):
         self._scanMessages()
         return len(self._messages) if self._messages is not None else 0
 
+    # Retorna 0 ya que no se gestionan mensajes recientes en este ejemplo.
     def getRecentCount(self):
         return 0
 
+    # Retorna 0 ya que no se gestiona el conteo de mensajes no vistos.
     def getUnseenCount(self):
         return 0
 
+    # Retorna un valor fijo para UID validity del buzón.
     def getUIDValidity(self):
         return 1
 
+    # Indica que el buzón es escribible.
     def isWriteable(self):
         return True
 
+    # Retorna el delimitador jerarquico utilizado ("/").
     def getHierarchicalDelimiter(self):
         return "/"
 
+    # Función placeholder para agregar un listener de eventos al buzón.
     def addListener(self, listener):
         pass
 
+    # Función placeholder para remover un listener de eventos del buzón.
     def removeListener(self, listener):
         pass
 
-
+# Inicializa la cuenta IMAP creando la ruta del buzón según el email del usuario y asegurando que exista.
 @implementer(imap4.IAccount)
 class IMAPAccount:
     def __init__(self, avatarId, base_storage):
@@ -196,10 +215,11 @@ class IMAPAccount:
         self.mailboxPath = os.path.join(base_storage, domain, local_part)
         os.makedirs(self.mailboxPath, exist_ok=True)
 
+    # Retorna una lista de buzones disponibles, en este caso solo se retorna 'INBOX'.
     def listMailboxes(self, ref, mbox):
-        # Devuelve una lista de tuplas (nombre, buzón)
         return list({"INBOX": FileMailbox(self.mailboxPath)}.items())
 
+    # Selecciona y retorna el buzón solicitado; si no existe, lanza una excepción.
     def select(self, mbox, rw):
         mailboxes = dict(self.listMailboxes(None, None))
         if mbox in mailboxes:
@@ -207,11 +227,13 @@ class IMAPAccount:
         else:
             raise Exception("Mailbox not found")
 
+    # Crea un nuevo buzón dentro de la cuenta y retorna el buzón creado.
     def create(self, mbox):
         new_path = os.path.join(self.mailboxPath, mbox)
         os.makedirs(new_path, exist_ok=True)
         return FileMailbox(new_path)
 
+    # Intenta eliminar el buzón especificado y retorna True si tuvo éxito; de lo contrario, lanza una excepción.
     def delete(self, mbox):
         mbox_path = os.path.join(self.mailboxPath, mbox)
         try:
@@ -220,30 +242,33 @@ class IMAPAccount:
         except Exception as e:
             raise Exception("No se pudo eliminar el buzón: " + str(e))
 
+    # Imprime un mensaje indicando que la suscripción fue solicitada, pero no está implementada.
     def subscribe(self, mbox):
         print(f"Suscripción a {mbox} solicitada, pero no implementada.")
 
+    # Asume que todos los buzones están suscritos y retorna True.
     def isSubscribed(self, mbox):
-        # Para este ejemplo, asumimos que todos los buzones están suscritos.
         return True
 
-
+# Inicializa el realm IMAP utilizando la ruta base de almacenamiento para la asignación de buzones.
 @implementer(portal.IRealm)
 class IMAPRealm:
     def __init__(self, base_storage):
         self.base_storage = base_storage
 
+    # Retorna la cuenta IMAP asociada al avatarId si se solicita la interfaz IAccount, de lo contrario lanza NotImplementedError.
     def requestAvatar(self, avatarId, mind, *interfaces):
         if imap4.IAccount in interfaces:
             account = IMAPAccount(avatarId, self.base_storage)
             return imap4.IAccount, account, lambda: None
         raise NotImplementedError("Interfaz no soportada")
 
-
+# Inicializa la fábrica del servidor IMAP con el portal de autenticación.
 class IMAP4ServerFactory(protocol.ServerFactory):
     def __init__(self, portal):
         self.portal = portal
 
+    # Construye el protocolo IMAP4Server, asignando el portal y configurando los mecanismos de autenticación (LOGIN y PLAIN).
     def buildProtocol(self, addr):
         p = imap4.IMAP4Server()
         p.portal = self.portal
@@ -251,7 +276,7 @@ class IMAP4ServerFactory(protocol.ServerFactory):
                          b"PLAIN": imap4.PLAINCredentials}
         return p
 
-
+# Parsea y retorna los argumentos de línea de comandos para configurar el servidor IMAP.
 def parse_args():
     parser = argparse.ArgumentParser(description="Servidor IMAP con Twisted")
     parser.add_argument("-s", "--storage", required=True,
@@ -260,6 +285,7 @@ def parse_args():
                         help="Puerto en el que se ejecutará el servidor IMAP")
     return parser.parse_args()
 
+# Configura y arranca el servidor IMAP creando el realm, checker, portal y fábrica, e inicia el reactor en el puerto especificado.
 def main():
     args = parse_args()
     realm = IMAPRealm(args.storage)

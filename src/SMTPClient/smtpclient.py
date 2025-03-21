@@ -1,4 +1,3 @@
-
 from __future__ import print_function
 import csv
 import sys
@@ -11,7 +10,7 @@ from email.message import EmailMessage
 import email.utils
 
 class MySMTPClient(smtp.ESMTPClient):
-
+    # Inicializa el cliente SMTP con remitente, destinatario y datos del mensaje.
     def __init__(self, mailFrom, mailTo, mailData, *args, **kwargs):
 
         self.mailFrom = mailFrom
@@ -19,17 +18,21 @@ class MySMTPClient(smtp.ESMTPClient):
         self.mailData = mailData
         super(MySMTPClient, self).__init__(*args, **kwargs)
 
+    # Devuelve el remitente y lo limpia para evitar duplicados en envíos múltiples.
     def getMailFrom(self):
         result = self.mailFrom
         self.mailFrom = None
         return result
 
+    # Retorna una lista que contiene el destinatario del correo.
     def getMailTo(self):
         return [self.mailTo]
 
+    # Convierte el contenido del mensaje a un stream de bytes para el envío.
     def getMailData(self):
         return io.BytesIO(self.mailData.encode("utf-8"))
 
+    # Notifica el envío correcto del correo e indica al transporte que cierre la conexión.
     def sentMail(self, code, resp, numOk, addresses, log):
         print("[INFO] Enviado a {} direcciones: {}".format(numOk, addresses))
         self.transport.loseConnection()
@@ -37,12 +40,14 @@ class MySMTPClient(smtp.ESMTPClient):
 
 
 class SMTPClientFactory(protocol.ClientFactory):
+    # Inicializa la fábrica del cliente SMTP con los datos necesarios para crear el protocolo.
     def __init__(self, mailFrom, mailTo, mailData):
 
         self.mailFrom = mailFrom
         self.mailTo = mailTo
         self.mailData = mailData
 
+    # Construye y retorna una instancia de MySMTPClient para la conexión.
     def buildProtocol(self, addr):
         return MySMTPClient(
             self.mailFrom,
@@ -52,6 +57,7 @@ class SMTPClientFactory(protocol.ClientFactory):
             identity="localhost"
         )
 
+    # Maneja la falla de conexión, imprimiendo el error y propagándolo a pendingMessages.
     def clientConnectionFailed(self, connector, reason):
 
         print("[ERROR] Conexión fallida:", reason.getErrorMessage())
@@ -60,6 +66,7 @@ class SMTPClientFactory(protocol.ClientFactory):
 
 
 
+# Configura y envía el correo estableciendo la conexión y retornando un Deferred.
 def sendEmail(host, port, mailFrom, mailTo, mailData):
 
     d = defer.Deferred()
@@ -67,12 +74,14 @@ def sendEmail(host, port, mailFrom, mailTo, mailData):
     connector = reactor.connectTCP(host, port, factory)
 
 
+    # Callback que se ejecuta cuando se pierde la conexión, notificando el envío exitoso.
     def onConnectionLost(_):
         d.callback("[OK] Correo enviado a {}.".format(mailTo))
 
 
     connector.transport = None
 
+    # Asigna el transporte del protocolo a la conexión.
     def checkTransport(proto):
         connector.transport = proto.transport
 
@@ -82,6 +91,7 @@ def sendEmail(host, port, mailFrom, mailTo, mailData):
     )
     oldBuildProtocol = factory.buildProtocol
 
+    # Reemplaza el mtodo de construcción del protocolo para incluir onConnectionLost y asignar el transporte.
     def newBuildProtocol(addr):
         proto = oldBuildProtocol(addr)
         proto.connectionLost = onConnectionLost
@@ -93,6 +103,7 @@ def sendEmail(host, port, mailFrom, mailTo, mailData):
     return d
 
 
+# Parsea los argumentos de línea de comandos necesarios para configurar el cliente SMTP.
 def parse_args():
     parser = argparse.ArgumentParser(description="Cliente SMTP con Twisted",  add_help=False)
     parser.add_argument("-h", "--host", required=True,
@@ -103,6 +114,7 @@ def parse_args():
                         help="Archivo con el cuerpo base del mensaje")
     return parser.parse_args()
 
+# Construye el mensaje de correo (EML) en formato MIME usando remitente, destinatario, asunto, cuerpo y personalización del nombre.
 def build_eml(mailFrom, mailTo, subject, body, name):
     msg = EmailMessage()
 
@@ -115,6 +127,7 @@ def build_eml(mailFrom, mailTo, subject, body, name):
     msg.set_content(body.format(name=name))
     return msg
 
+# Función main que gestiona la lectura de datos, procesamiento del CSV y envío de correos.
 def main():
     mailFrom = input("Ingrese el email del remitente: ").strip()
 
@@ -142,7 +155,7 @@ def main():
     if args.host.lower() in ["localhost", "127.0.0.1"]:
         smtp_port = 2500
     else:
-        smtp_port = 25
+        smtp_port = 2525
 
     global pendingMessages
     pendingMessages = defer.DeferredList([])
@@ -162,6 +175,7 @@ def main():
         pendingMessages.addCallbacks(lambda x: x, lambda x: x)
 
 
+    # Callback final que se ejecuta cuando todos los envíos han finalizado.
     def onAllDone(_):
         print("[INFO] Todos los envíos completados. Saliendo.")
         reactor.stop()
@@ -170,6 +184,6 @@ def main():
 
 
 if __name__ == "__main__":
-    # Iniciamos la aplicación
+    # Iniciamos la aplicación y arrancamos el reactor.
     main()
     reactor.run()
