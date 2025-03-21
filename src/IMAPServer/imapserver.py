@@ -14,7 +14,7 @@ from twisted.cred import error
 from twisted.cred.checkers import ICredentialsChecker
 from twisted.mail.imap4 import MessageSet
 
-CREDENTIALS_CSV = "/home/ec2-user/tarearedes/ProyectoRedes/src/IMAPServer/credentials.csv"
+CREDENTIALS_CSV = "/home/ec2-user/tarearedes/TareaRedes/src/IMAPServer/credentials.csv"
 
 # Inicializa el checker cargando las credenciales desde el CSV, filtrando filas inválidas.
 @implementer(ICredentialsChecker)
